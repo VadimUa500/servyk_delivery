@@ -8,7 +8,14 @@ register_parser = reqparse.RequestParser()
 register_parser.add_argument('email', type=str, required=True, help="Введіть електронну пошту")
 register_parser.add_argument('password', type=str, required=True, help="Введіть пароль")
 register_parser.add_argument('display_name', type=str, required=False)
-register_parser.add_argument('role', type=str, required=False, choices=("client","courier","admin"), default="client")
+register_parser.add_argument(
+    'role',
+    type=str,
+    required=False,
+    choices=("client", "courier"),
+    default="client"
+)
+
 
 login_parser = reqparse.RequestParser()
 login_parser.add_argument('email', type=str, required=True, help="Введіть електронну пошту")

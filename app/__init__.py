@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from dotenv import load_dotenv
 import os
-
+from app.routes.admin_routes import AdminUsersList, AdminUserUpdate
 from app.extensions import mongo, jwt
 
 def create_app():
@@ -15,16 +15,12 @@ def create_app():
     mongo.init_app(app)
     jwt.init_app(app)
 
-    # ===== Імпорт НАШИХ маршрутів (Delivery-helper) =====
     from app.routes.auth_routes import Register, Login
     from app.routes.profile_routes import UserProfile
     from app.routes.user_routes import UserList, UserSearch
-
-    # нові — замість чатів/повідомлень:
     from app.routes.order_routes import (
         OrderCreate, OrdersList, OrderAccept, OrderDelivered, OrderCancel, OrderGet
     )
-    from app.routes.admin_routes import UsersAdminList
     from app.routes.status_routes import GeneralStatus, UserStatus, MyStatus
     from app.routes.upload_avatar_route import UploadAvatar
 
@@ -40,15 +36,16 @@ def create_app():
     api.add_resource(UserSearch, "/users/search")
 
     # orders
-    api.add_resource(OrderCreate,   "/orders")                      # POST
-    api.add_resource(OrdersList,    "/orders")                      # GET(список по ролі)
-    api.add_resource(OrderGet,      "/orders/<string:order_id>")     # GET   (деталі)
-    api.add_resource(OrderAccept,   "/orders/accept/<string:order_id>")     # POST (courier/admin)
-    api.add_resource(OrderDelivered,"/orders/delivered/<string:order_id>")  # POST (courier/admin)
-    api.add_resource(OrderCancel,   "/orders/cancel/<string:order_id>")     # POST (owner/admin)
+    api.add_resource(OrderCreate,    "/orders")
+    api.add_resource(OrdersList,     "/orders")
+    api.add_resource(OrderGet,       "/orders/<string:order_id>")
+    api.add_resource(OrderAccept,    "/orders/accept/<string:order_id>")
+    api.add_resource(OrderDelivered, "/orders/delivered/<string:order_id>")
+    api.add_resource(OrderCancel,    "/orders/cancel/<string:order_id>")
 
     # admin
-    api.add_resource(UsersAdminList, "/admin/users")
+    api.add_resource(AdminUsersList, "/admin/users", endpoint="usersadminlist")
+    api.add_resource(AdminUserUpdate, "/admin/users/<string:user_id>", endpoint="adminuserupdate")
 
     # status & uploads
     api.add_resource(GeneralStatus, '/status')
