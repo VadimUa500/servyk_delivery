@@ -1,0 +1,19 @@
+# Секретні параметри
+.env
+.env.*
+
+# Віртуальне середовище
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Середовище розробки
+.idea/
+.vscode/
+
+# Системні файли
+.DS_Store
+Thumbs.db
